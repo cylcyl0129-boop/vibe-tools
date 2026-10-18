@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>每日冒險卡牌包 - 點燃你的生活微革命</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="bg-gradient-to-br from-amber-50/50 via-sky-50/30 to-purple-50/40">
+
+  <!-- 頂部狀態列 -->
+  <header class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-100 px-4 py-3 shadow-sm">
+    <div class="max-w-6xl mx-auto flex justify-between items-center">
+      <div class="flex items-center gap-3">
+        <span class="text-2xl">✨</span>
+        <h1 class="font-bold text-lg bg-gradient-to-r from-indigo-600 to-purple-600 bg-clip-text text-transparent">每日冒險卡牌包</h1>
+      </div>
+      <div class="flex items-center gap-4 text-sm font-medium">
+        <div class="bg-amber-100/70 text-amber-800 px-3 py-1 rounded-full flex items-center gap-1">
+          🔥 連續冒險 <span id="streak-count" class="font-bold">5</span> 天
+        </div>
+        <div class="bg-purple-100/70 text-purple-800 px-3 py-1 rounded-full flex items-center gap-1">
+          🃏 已收錄回憶 <span id="journal-count" class="font-bold">12</span> 張
+        </div>
+        <button id="audio-toggle" class="p-2 rounded-full hover:bg-slate-100 transition" title="音效開關">🔊</button>
+        <div id="user-profile-section">
+          <!-- 動態載入會員登入按鈕或大頭貼 -->
+          <button id="login-btn" class="bg-indigo-600 text-white px-4 py-1.5 rounded-full hover:bg-indigo-700 transition shadow-sm">登入 / 註冊</button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主要內容區 -->
+  <main class="max-w-6xl mx-auto px-4 py-8 space-y-12">
+
+    <!-- 模組 2.2 & 2.3：每日抽卡區與任務清單 -->
+    <section id="adventure-section" class="space-y-6">
+      <div class="text-center space-y-2">
+        <h2 class="text-2xl font-bold text-slate-800">今日盲盒卡牌包</h2>
+        <p id="deck-subtitle" class="text-slate-500 text-sm">今日卡牌包已就緒，請翻開您的三張卡，開啟今天的微冒險。</p>
+      </div>
+
+      <!-- 3 張 3D 浮動卡牌容器 -->
+      <div id="card-container" class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto py-4">
+        <!-- 卡牌將由 JavaScript 動態生成 -->
+      </div>
+
+      <!-- 任務操作與清單區 -->
+      <div id="task-action-panel" class="hidden max-w-4xl mx-auto bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-4">
+        <div class="flex justify-between items-center">
+          <h3 class="font-bold text-slate-700 text-lg">今日微任務執行清單</h3>
+          <div class="flex gap-2">
+            <button id="reroll-btn" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg transition">🎲 隨機替換一張</button>
+            <button id="add-custom-task-btn" class="text-xs bg-indigo-50 hover:bg-indigo-100 text-indigo-700 px-3 py-1.5 rounded-lg transition">➕ 新增自訂任務</button>
+          </div>
+        </div>
+        <div id="task-list" class="space-y-3">
+          <!-- 任務項目 -->
+        </div>
+      </div>
+    </section>
+
+    <!-- 模組 2.4：明信片小畫家 -->
+    <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">🎨 創意明信片小畫家</h2>
+          <p class="text-slate-500 text-sm">上傳照片或自由創作，將今日的心情與祝福傳送給好友！</p>
+        </div>
+        <div class="flex gap-2 items-center">
+          <input type="color" id="brush-color" value="#4f46e5" class="w-8 h-8 rounded cursor-pointer border-0">
+          <input type="range" id="brush-size" min="1" max="20" value="5" class="w-24">
+          <button id="eraser-btn" class="bg-slate-100 px-3 py-1.5 rounded-lg text-sm hover:bg-slate-200">橡皮擦</button>
+          <button id="clear-canvas" class="bg-rose-50 text-rose-600 px-3 py-1.5 rounded-lg text-sm hover:bg-rose-100">清除</button>
+        </div>
+      </div>
+      <div class="relative border-2 border-dashed border-slate-200 rounded-xl overflow-hidden flex justify-center bg-slate-50">
+        <canvas id="postcard-canvas" width="600" height="350" class="cursor-crosshair bg-white shadow-inner"></canvas>
+      </div>
+      <div class="flex justify-end gap-3">
+        <label class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm cursor-pointer transition">
+          📁 上傳背景照片 <input type="file" id="bg-upload" accept="image/*" class="hidden">
+        </label>
+        <button id="send-postcard-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white px-5 py-2 rounded-xl text-sm transition shadow-sm">傳送給好友 💌</button>
+      </div>
+    </section>
+
+    <!-- 模組 2.5：未來時光膠囊 -->
+    <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">⏳ 未來時光膠囊</h2>
+          <p class="text-slate-500 text-sm">寫一封信給未來自己的冒險心靈對話。</p>
+        </div>
+        <button id="new-capsule-btn" class="bg-amber-600 hover:bg-amber-700 text-white px-4 py-2 rounded-xl text-sm transition">封存新膠囊 🔒</button>
+      </div>
+      <div id="capsules-grid" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <!-- 時光膠囊卡片列表 -->
+      </div>
+    </section>
+
+    <!-- 模組 2.6：冒險日誌與里程碑牆 -->
+    <section class="bg-white rounded-2xl p-6 shadow-sm border border-slate-100 space-y-6">
+      <div class="flex justify-between items-center">
+        <div>
+          <h2 class="text-xl font-bold text-slate-800">📖 我的冒險日誌與里程碑</h2>
+          <p class="text-slate-500 text-sm">每一張紀念卡，都是你勇敢探索世界的溫暖足跡。</p>
+        </div>
+      </div>
+      <!-- 里程碑徽章列 -->
+      <div id="badges-container" class="flex gap-4 overflow-x-auto pb-2">
+        <!-- 徽章動態載入 -->
+      </div>
+      <!-- 歷史紀念卡網格 -->
+      <div id="journal-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+        <!-- 歷史卡牌 -->
+      </div>
+    </section>
+
+  </main>
+
+  <!-- 模組 2.1 & 2.4：好友聊天室與私訊抽屜 (Floating Widget) -->
+  <aside class="fixed bottom-4 right-4 z-50">
+    <button id="chat-toggle-btn" class="bg-indigo-600 hover:bg-indigo-700 text-white p-4 rounded-full shadow-lg flex items-center gap-2 transition transform hover:scale-105">
+      💬 <span class="text-sm font-bold">冒險聊天室</span>
+    </button>
+  </aside>
+
+  <!-- 引入邏輯模組 -->
+  <script type="module" src="js/deck.js"></script>
+  <script type="module" src="js/canvas-postcard.js"></script>
+  <script type="module" src="js/capsule.js"></script>
+  <script type="module" src="js/journal.js"></script>
+</body>
+</html>

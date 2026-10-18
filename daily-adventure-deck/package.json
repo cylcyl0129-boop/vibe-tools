@@ -1,0 +1,28 @@
+{
+  "name": "daily-adventure-deck",
+  "version": "1.0.0",
+  "description": "每日冒險卡牌包 - 透過抽卡盲盒與微任務，打破生活枯燥，建立健康、心靈與探索的小習慣 Web App。",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --open=index.html"
+  },
+  "keywords": [
+    "pwa",
+    "habit-tracker",
+    "gamification",
+    "tailwindcss",
+    "firebase",
+    "vanilla-js"
+  ],
+  "author": "Senior Full-Stack Developer",
+  "license": "MIT",
+  "dependencies": {
+    "canvas-confetti": "^1.6.0",
+    "firebase": "^10.8.0"
+  },
+  "devDependencies": {
+    "live-server": "^1.2.2",
+    "serve": "^14.2.1"
+  }
+}
