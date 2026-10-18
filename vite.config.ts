@@ -6,7 +6,7 @@ import {defineConfig} from 'vite';
 export default defineConfig(() => {
   return {
     // 加上這行對應你的 GitHub Repository 名稱與子路徑
-    base: '/vibe-tools/SpiritualSeeds/',
+    base: '/vibe-tools/',
     
     plugins: [react(), tailwindcss()],
     resolve: {
