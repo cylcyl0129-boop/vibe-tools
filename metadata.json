@@ -1,0 +1,6 @@
+{
+  "name": "心靈種子與每日冒險",
+  "description": "當日即時與無負擔的心靈花園與每日微冒險，寫下煩惱、灌溉開花、刮出專屬鼓勵並翻開今日微任務，每日午夜自動歸零重生。",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
